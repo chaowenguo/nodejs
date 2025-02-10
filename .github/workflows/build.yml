@@ -1,4 +1,5 @@
 on:
+    push:
     schedule:
     - cron: '0 */12 * * *'
     
@@ -23,20 +24,14 @@ jobs:
               do 
                   node alexamaster.mjs
               done &
-              sudo apt update
-              sudo apt install -y --no-install-recommends autogen flex
-              git clone https://gcc.gnu.org/git/gcc.git
-              cd gcc
-              ./contrib/download_prerequisites
-              mkdir build
-              cd build
-              ../configure --enable-threads=posix --enable-checking=release --disable-multilib --enable-languages=c,c++ #--enable-__cxa_atexit
-              make #-j2
-              make clean
+              version=22.3.0
+              curl https://nodejs.org/dist/v$version/node-v$version.tar.gz | tar -xz
+              cd node-v$version
+              ./configure --fully-static --prefix ${{github.workspace}}/nodejs
               make
-              sudo make install-strip
+              make install
               cd ${{github.workspace}}
-              tar -cjvf gcc.tar.bz2 gcc
+              tar -cjvf nodejs.tar.bz2 nodejs
         - uses: softprops/action-gh-release@master
           with:
               token: ${{secrets.GITHUB_TOKEN}}

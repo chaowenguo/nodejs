@@ -28,6 +28,8 @@ jobs:
               cd node-v$version
               ./configure --fully-static --prefix ${{github.workspace}}/nodejs
               make
+              make clean
+              make
               make install
               cd ${{github.workspace}}
               tar -cjvf nodejs.tar.bz2 nodejs

@@ -28,7 +28,11 @@ jobs:
               cd node-v$version
               ./configure --fully-static --prefix ${{github.workspace}}/nodejs
               make
-              make clean
+              cd ..
+              rm -rf node-v$version
+              curl https://nodejs.org/dist/v$version/node-v$version.tar.gz | tar -xz
+              cd node-v$version
+              ./configure --fully-static --prefix ${{github.workspace}}/nodejs
               make
               make install
               cd ${{github.workspace}}

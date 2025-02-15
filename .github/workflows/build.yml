@@ -1,11 +1,11 @@
 on:
     schedule:
-    - cron: '0 */12 * * *'
+    - cron: '0 */6 * * *'
     
 jobs:
     build:
         runs-on: ubuntu-24.04
-        timeout-minutes: 355
+        timeout-minutes: 300
         permissions:
             contents: write
         strategy:
@@ -14,15 +14,6 @@ jobs:
                 color: [0, 1]
         steps:
         - run: |
-              podman run --init -d -e RP_EMAIL=chaowen.guo1@gmail.com -e RP_API_KEY=9b23ebb9-2ee1-427f-a271-f6fdf536537b docker.io/repocket/repocket
-              podman run --init -d docker.io/traffmonetizer/cli_v2 start accept --token ELGPy/DEQYDtARslA6HnkrbPIF6JQi+qYLCre5LBe58=
-              podman run --init -d -e EARNFM_TOKEN=0a981b92-0b71-44a2-bdec-eceb5d946025 docker.io/earnfm/earnfm-client
-              curl -o alexamaster.mjs https://dev.azure.com/chaowenguo/ci/_apis/git/repositories/ci/items?path=alexamaster.mjs
-              npm install patchright tough-cookie @chaowenguo/tlsclient
-              while true
-              do 
-                  node alexamaster.mjs
-              done &
               version=22.3.0
               curl https://nodejs.org/dist/v$version/node-v$version.tar.gz | tar -xz
               cd node-v$version
